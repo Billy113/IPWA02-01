@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<f:metadata>
+</f:metadata>
+<h:head>
+    <title>Ghost Net Fishing</title>
+    <link type="text/css" rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/css/style.css"/>
+</h:head>
+<f:view>
+    <ui:include src="/header.xhtml"/>
+</f:view>
+<f:view class="main-content">
+    <h:form id="ghostForm">
+        <p:panel header="Für Bergung des Netztes #{GhostManagerBean.ghostName} Anmelden">
+            <p:panelGrid columns="2" layout="grid">
+
+                <p:outputLabel for="HunterName" value="Ihr Name:"/>
+                <p:inputText id="HunterName" value="#{GhostManagerBean.hunterName}"
+                             requiredMessage="Bitte geben Sie Ihren Namen ein."/>
+
+                <p:outputLabel for="HunterPhone" value="Ihre Telefonnummer:"/>
+                <p:inputText id="HunterPhone" value="#{GhostManagerBean.hunterPhone}"
+                             requiredMessage="Bitte geben Sie ihre Telefonnummer ein."/>
+            </p:panelGrid>
+
+            <p:messages id="messages" showDetail="true" closable="true"/>
+
+            <p:commandButton value="Bergung übernehmen"
+                             action="#{GhostManagerBean.registerHunter()}"
+                             icon="pi pi-plus"
+                             style="margin-top: 15px;"
+                             update="messages"/>
+        </p:panel>
+    </h:form>
+</f:view>
+</html>

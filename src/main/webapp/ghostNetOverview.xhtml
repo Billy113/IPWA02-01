@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+<f:metadata>
+    <f:event type="preRenderView" listener="#{GhostsOverviewBean.loadGhosts()}"/>
+</f:metadata>
+<h:head>
+    <title>Ghost Net Fishing</title>
+    <link type="text/css" rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/css/style.css"/>
+</h:head>
+<f:view>
+    <ui:include src="/header.xhtml"/>
+</f:view>
+<f:view class="main-content">
+    <p:accordionPanel multiple="false">
+        <p:tab title="Gemeldete Netze">
+            <div class="ui-accordion-content">
+                <h:panelGroup rendered="#{empty GhostsOverviewBean.reportedGhosts}">
+                    <p>Keine neuen Netze gemeldet</p>
+                </h:panelGroup>
+                <ui:repeat value="#{GhostsOverviewBean.reportedGhosts}" var="ghost">
+                    <div class="ghost-container">
+                        <p class="grid-details">
+                            <h:outputText value="Name des Meldenden:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.name}"/>
+
+                            <h:outputText value="Status:" style="font-weight: bold"/>
+                            <h:outputText value="#{GhostsOverviewBean.status(ghost.status)}"/>
+
+                            <h:outputText value="Longitude:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.longitude}"/>
+
+                            <h:outputText value="Latitude:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.latitude}"/>
+
+                            <h:outputText value="Größe in m²:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.size}"/>
+                        </p>
+
+                        <p:commandButton action="#{navigationBean.goToRegisterForGhost}"
+                                         value="Bergen"
+                                         styleClass="detail-button">
+                            <f:setPropertyActionListener target="#{GhostManagerBean.selectedGhostId}"
+                                                         value="#{ghost.id}"/>
+                        </p:commandButton>
+                    </div>
+                </ui:repeat>
+            </div>
+        </p:tab>
+
+        <p:tab title="Verschollene Netze">
+            <div class="ui-accordion-content">
+                <h:panelGroup rendered="#{empty GhostsOverviewBean.missingGhosts}">
+                    <p>Keine verlorene Netze gemeldet</p>
+                </h:panelGroup>
+                <ui:repeat value="#{GhostsOverviewBean.missingGhosts}" var="ghost">
+                    <div class="ghost-container">
+                        <p class="grid-details">
+                            <h:outputText value="Name des Meldenden:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.name}"/>
+
+                            <h:outputText value="Status:" style="font-weight: bold"/>
+                            <h:outputText value="#{GhostsOverviewBean.status(ghost.status)}"/>
+
+                            <h:outputText value="Longitude:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.longitude}"/>
+
+                            <h:outputText value="Latitude:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.latitude}"/>
+
+                            <h:outputText value="Größe in m²:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.size}"/>
+                        </p>
+
+                    </div>
+                </ui:repeat>
+            </div>
+        </p:tab>
+
+        <p:tab title="In Bergung">
+            <div class="ui-accordion-content">
+                <h:panelGroup rendered="#{empty GhostsOverviewBean.retrieving}">
+                    <p>Es befinden sich derzeit keine Netze in Bergung</p>
+                </h:panelGroup>
+                <ui:repeat value="#{GhostsOverviewBean.retrieving}" var="ghost">
+                    <div class="ghost-container">
+                        <p class="grid-details">
+                            <h:outputText value="Name des Meldenden:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.name}"/>
+
+                            <h:outputText value="Status:" style="font-weight: bold"/>
+                            <h:outputText value="#{GhostsOverviewBean.status(ghost.status)}"/>
+
+                            <h:outputText value="Longitude:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.longitude}"/>
+
+                            <h:outputText value="Latitude:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.latitude}"/>
+
+                            <h:outputText value="Größe in m²:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.size}"/>
+
+                            <h:outputText value="Bergender:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.hunter.name}"/>
+
+                            <h:outputText value="Telefonnummer:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.hunter.phone}"/>
+                        </p>
+
+                        <p:commandButton action="#{navigationBean.goToChangeHunter}"
+                                         value="Bergung übernehmen"
+                                         styleClass="detail-button"
+                                         style="background-color: #007bff; border-color: #007bff;">
+                            <f:setPropertyActionListener target="#{GhostManagerBean.selectedGhostId}"
+                                                         value="#{ghost.id}"/>
+                        </p:commandButton>
+
+                        <p:commandButton action="#{GhostManagerBean.markAsRetrieved()}"
+                                         value="Als geborgen melden"
+                                         styleClass="detail-button"
+                                         style="background-color: #28a745; border-color: #28a745;">
+                            <f:setPropertyActionListener target="#{GhostManagerBean.selectedGhostId}"
+                                                         value="#{ghost.id}"/>
+                        </p:commandButton>
+
+                        <p:commandButton action="#{GhostManagerBean.markAsMissing()}"
+                                         value="Als verschollen melden"
+                                         styleClass="detail-button"
+                                         style="background-color: #dc3545; border-color: #dc3545;">
+                            <f:setPropertyActionListener target="#{GhostManagerBean.selectedGhostId}"
+                                                         value="#{ghost.id}"/>
+                        </p:commandButton>
+                    </div>
+                </ui:repeat>
+            </div>
+        </p:tab>
+
+        <p:tab title="Geborgene Netze">
+            <div class="ui-accordion-content">
+                <h:panelGroup rendered="#{empty GhostsOverviewBean.retrievedGhosts}">
+                    <p>Es wurden keine Netze als geborgen gemeldet</p>
+                </h:panelGroup>
+                <ui:repeat value="#{GhostsOverviewBean.retrievedGhosts}" var="ghost">
+                    <div class="ghost-container">
+                        <p class="grid-details">
+                            <h:outputText value="Name des Meldenden:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.name}"/>
+
+                            <h:outputText value="Status:" style="font-weight: bold"/>
+                            <h:outputText value="#{GhostsOverviewBean.status(ghost.status)}"/>
+
+                            <h:outputText value="Longitude:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.longitude}"/>
+
+                            <h:outputText value="Latitude:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.latitude}"/>
+
+                            <h:outputText value="Größe in m²:" style="font-weight: bold"/>
+                            <h:outputText value="#{ghost.size}"/>
+                        </p>
+                    </div>
+                </ui:repeat>
+            </div>
+        </p:tab>
+    </p:accordionPanel>
+
+</f:view>
+</html>
